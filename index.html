@@ -1,0 +1,2977 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Manager Pro</title>
+    <link rel="icon" type="image/x-icon" href="https://github.com/favicon.ico">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+        
+        :root {
+            --primary: #238636;
+            --primary-hover: #2ea043;
+            --primary-light: rgba(35, 134, 54, 0.1);
+            --danger: #da3633;
+            --danger-hover: #f85149;
+            --danger-light: rgba(218, 54, 51, 0.1);
+            --warning: #d29922;
+            --warning-hover: #e3b341;
+            --warning-light: rgba(210, 153, 34, 0.1);
+            --info: #58a6ff;
+            --info-hover: #79c0ff;
+            --info-light: rgba(88, 166, 255, 0.1);
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --bg-card: #1c2128;
+            --border: #30363d;
+            --border-light: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #7d8590;
+            --text-tertiary: #6e7681;
+            --accent: #58a6ff;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-lg: rgba(0, 0, 0, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 10px;
+            line-height: 1.6;
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 20px 60px var(--shadow-lg);
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                border-radius: 20px;
+            }
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1f6feb 100%);
+            padding: 20px 15px;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            header {
+                padding: 35px 25px;
+            }
+        }
+        
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 32px;
+                margin-bottom: 12px;
+            }
+        }
+        
+        .description {
+            font-size: 14px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+        
+        @media (min-width: 768px) {
+            .description {
+                font-size: 16px;
+            }
+        }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 15px;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        @media (min-width: 480px) {
+            .stats-bar {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .stats-bar {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 15px;
+                padding: 20px;
+            }
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s;
+        }
+        
+        @media (min-width: 768px) {
+            .stat-item {
+                padding: 20px 15px;
+            }
+            
+            .stat-item:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(88, 166, 255, 0.2);
+                border-color: var(--accent);
+            }
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @media (min-width: 768px) {
+            .stat-value {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        @media (min-width: 768px) {
+            .stat-label {
+                font-size: 13px;
+            }
+        }
+        
+        .tabs {
+            display: flex;
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+            padding: 0 10px;
+        }
+        
+        .tabs::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .tabs::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 0 10px;
+        }
+        
+        .tabs::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        
+        .tabs::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+        
+        .tab {
+            padding: 12px 15px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            position: relative;
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 140px;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .tab {
+                padding: 16px 24px;
+                font-size: 14px;
+                flex: 1;
+                text-align: center;
+                min-width: auto;
+            }
+        }
+        
+        .tab.active {
+            background: var(--bg-primary);
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        
+        .tab:hover:not(.active) {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .tab-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: linear-gradient(135deg, var(--danger), var(--danger-hover));
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px;
+        }
+        
+        @media (min-width: 768px) {
+            .tab-badge {
+                top: 6px;
+                right: 6px;
+                padding: 3px 7px;
+                font-size: 11px;
+            }
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .tab-content {
+                padding: 25px;
+            }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .input-section {
+            background: var(--bg-card);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-light);
+        }
+        
+        @media (min-width: 768px) {
+            .input-section {
+                padding: 20px;
+                border-radius: 12px;
+                margin-bottom: 20px;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        @media (min-width: 768px) {
+            input, select {
+                padding: 10px 12px;
+                font-size: 15px;
+            }
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+        
+        small {
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .filters {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+        }
+        
+        @media (min-width: 768px) {
+            .filters {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+                padding: 18px;
+                margin-bottom: 20px;
+            }
+        }
+        
+        .search-box {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 8px;
+        }
+        
+        @media (min-width: 768px) {
+            .search-box {
+                gap: 10px;
+            }
+        }
+        
+        .search-box input {
+            flex: 1;
+        }
+        
+        button {
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        @media (min-width: 768px) {
+            button {
+                padding: 14px 24px;
+                font-size: 15px;
+                border-radius: 12px;
+            }
+            
+            button:hover:not(:disabled) {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            }
+            
+            button:active:not(:disabled) {
+                transform: translateY(-1px);
+            }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--primary-hover) 0%, #3fb950 100%);
+            box-shadow: 0 8px 20px rgba(46, 160, 67, 0.5);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, var(--danger-hover) 100%);
+            box-shadow: 0 4px 12px rgba(218, 54, 51, 0.3);
+        }
+        
+        .btn-danger:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--danger-hover) 0%, #ff7b72 100%);
+            box-shadow: 0 8px 20px rgba(248, 81, 73, 0.5);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning) 0%, var(--warning-hover) 100%);
+            box-shadow: 0 4px 12px rgba(210, 153, 34, 0.3);
+        }
+        
+        .btn-warning:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--warning-hover) 0%, #f2cc60 100%);
+            box-shadow: 0 8px 20px rgba(227, 179, 65, 0.5);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, var(--info) 0%, var(--info-hover) 100%);
+            box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+        }
+        
+        .btn-info:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--info-hover) 0%, #a5d8ff 100%);
+            box-shadow: 0 8px 20px rgba(121, 192, 255, 0.5);
+        }
+        
+        button:disabled {
+            background: linear-gradient(135deg, #484f58, #3d444d);
+            cursor: not-allowed;
+            opacity: 0.5;
+            box-shadow: none;
+        }
+        
+        button:disabled:hover {
+            transform: none;
+        }
+        
+        .action-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+        }
+        
+        @media (min-width: 768px) {
+            .action-bar {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 18px;
+                margin-bottom: 20px;
+            }
+        }
+        
+        .action-bar-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .action-bar-buttons {
+                flex-direction: row;
+                width: auto;
+                gap: 10px;
+            }
+        }
+        
+        .action-bar button {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .action-bar button {
+                flex: 0 0 auto;
+            }
+        }
+        
+        .selected-count {
+            font-weight: 700;
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            border: 2px solid var(--border);
+            text-align: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .selected-count {
+                width: auto;
+                margin-bottom: 0;
+                padding: 11px 18px;
+                font-size: 14px;
+            }
+        }
+        
+        .instructions {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .instructions {
+                padding: 20px;
+                border-radius: 12px;
+                margin-bottom: 20px;
+            }
+        }
+        
+        .instructions h3 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+        
+        @media (min-width: 768px) {
+            .instructions h3 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+        
+        .instructions ol, .instructions ul {
+            padding-right: 20px;
+            font-size: 14px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+        
+        .instructions code {
+            background: var(--bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+            font-size: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .token-instructions {
+            background: var(--primary-light);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 12px;
+        }
+        
+        .token-instructions summary {
+            cursor: pointer;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary-hover);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .token-instructions ol {
+            list-style: none;
+            counter-reset: step-counter;
+            padding-right: 0;
+            margin-top: 15px;
+        }
+        
+        .token-instructions li {
+            counter-increment: step-counter;
+            margin-bottom: 15px;
+            padding-right: 40px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .token-instructions li::before {
+            content: counter(step-counter);
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 12px;
+            font-weight: 800;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .token-instructions strong {
+            color: var(--accent);
+        }
+        
+        .token-instructions code {
+            background: var(--bg-primary);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            border: 1px solid var(--border);
+            display: inline-block;
+            margin: 2px 0;
+        }
+        
+        .results h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 800;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        @media (min-width: 768px) {
+            .results h3 {
+                font-size: 22px;
+                margin-bottom: 18px;
+            }
+        }
+        
+        .user-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        
+        @media (min-width: 480px) {
+            .user-list {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .user-list {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 15px;
+            }
+        }
+        
+        .user-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        @media (min-width: 768px) {
+            .user-card {
+                padding: 16px;
+                border-radius: 12px;
+            }
+            
+            .user-card:hover {
+                transform: translateY(-5px);
+                border-color: var(--accent);
+                box-shadow: 0 10px 25px rgba(88, 166, 255, 0.2);
+            }
+        }
+        
+        .user-card.selected {
+            border-color: var(--warning);
+            background: var(--warning-light);
+        }
+        
+        .user-card.whitelisted {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        
+        .checkbox {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .checkbox::before {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s;
+        }
+        
+        .checkbox:checked {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+        }
+        
+        .checkbox:checked::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .checkbox:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
+        }
+        
+        @media (min-width: 768px) {
+            .checkbox {
+                top: 10px;
+                left: 10px;
+                width: 28px;
+                height: 28px;
+            }
+            
+            .checkbox::before {
+                font-size: 16px;
+            }
+            
+            .checkbox:hover {
+                transform: scale(1.1);
+            }
+        }
+        
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 8px auto 10px;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+        
+        @media (min-width: 768px) {
+            .avatar {
+                width: 80px;
+                height: 80px;
+                margin: 10px auto 12px;
+                border-width: 3px;
+            }
+            
+            .user-card:hover .avatar {
+                transform: scale(1.08);
+                border-color: var(--accent);
+            }
+        }
+        
+        .username {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 6px;
+            font-size: 14px;
+            word-break: break-word;
+        }
+        
+        @media (min-width: 768px) {
+            .username {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+        }
+        
+        .user-details {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        @media (min-width: 768px) {
+            .user-details {
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+        }
+        
+        .follow-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .follow-status.following {
+            background: var(--primary-light);
+            color: var(--primary-hover);
+            border: 1px solid var(--primary);
+        }
+        
+        .follow-status.not-following {
+            background: var(--danger-light);
+            color: var(--danger-hover);
+            border: 1px solid var(--danger);
+        }
+        
+        .follow-status.mutual {
+            background: var(--info-light);
+            color: var(--info-hover);
+            border: 1px solid var(--info);
+        }
+        
+        .user-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .user-actions {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 7px;
+                margin-top: 12px;
+            }
+        }
+        
+        .user-action-btn {
+            padding: 8px 12px;
+            font-size: 11px;
+            border-radius: 7px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .user-action-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        
+        .user-action-btn:active::after {
+            width: 200px;
+            height: 200px;
+        }
+        
+        @media (min-width: 768px) {
+            .user-action-btn {
+                padding: 9px 15px;
+                font-size: 12px;
+                border-radius: 8px;
+            }
+            
+            .user-action-btn:hover {
+                transform: translateY(-2px) scale(1.05);
+            }
+        }
+        
+        .profile-link {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-card));
+            color: var(--accent);
+            padding: 7px 14px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .profile-link:hover::before {
+            left: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .profile-link {
+                padding: 8px 16px;
+                font-size: 13px;
+                border-radius: 8px;
+            }
+            
+            .profile-link:hover {
+                background: linear-gradient(135deg, var(--accent), var(--info-hover));
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(88, 166, 255, 0.4);
+                border-color: var(--accent);
+            }
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px 15px;
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .loading {
+                padding: 40px;
+            }
+        }
+        
+        .spinner {
+            border: 4px solid rgba(88, 166, 255, 0.2);
+            border-radius: 50%;
+            border-top: 4px solid var(--accent);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .spinner {
+                border-width: 5px;
+                border-top-width: 5px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error, .success {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        @media (min-width: 768px) {
+            .error, .success {
+                padding: 15px 20px;
+                border-radius: 12px;
+                margin-top: 20px;
+                font-size: 14px;
+            }
+        }
+        
+        .error {
+            background: var(--danger-light);
+            border: 2px solid var(--danger);
+            color: var(--danger-hover);
+        }
+        
+        .success {
+            background: var(--primary-light);
+            border: 2px solid var(--primary);
+            color: var(--primary-hover);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        @media (min-width: 768px) {
+            .pagination {
+                margin-top: 20px;
+                gap: 10px;
+            }
+        }
+        
+        .pagination button {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+        
+        @media (min-width: 768px) {
+            .pagination button {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+        }
+        
+        .page-info {
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 8px 14px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            font-size: 12px;
+        }
+        
+        @media (min-width: 768px) {
+            .page-info {
+                padding: 9px 16px;
+                font-size: 13px;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-top: 2px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        @media (min-width: 768px) {
+            footer {
+                padding: 20px;
+                margin-top: 30px;
+                font-size: 13px;
+            }
+        }
+        
+        .slow-unfollow-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .slow-unfollow-section {
+                padding: 20px;
+                border-radius: 12px;
+                margin-top: 20px;
+            }
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            margin: 12px 0;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        
+        @media (min-width: 768px) {
+            .progress-bar {
+                height: 12px;
+                margin: 15px 0;
+            }
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .unfollow-status {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .unfollow-status {
+                font-size: 13px;
+                padding: 10px;
+            }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+        
+        /* تحسينات للشاشات الصغيرة جدًا */
+        @media (max-width: 360px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                border-radius: 8px;
+            }
+            
+            header {
+                padding: 15px 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .description {
+                font-size: 12px;
+            }
+            
+            .stats-bar {
+                grid-template-columns: 1fr;
+                padding: 10px;
+                gap: 8px;
+            }
+            
+            .stat-item {
+                padding: 12px 8px;
+            }
+            
+            .stat-value {
+                font-size: 20px;
+            }
+            
+            .stat-label {
+                font-size: 10px;
+            }
+            
+            .tab {
+                padding: 10px 12px;
+                font-size: 12px;
+                min-width: 110px;
+            }
+            
+            .tab-badge {
+                font-size: 9px;
+                padding: 1px 4px;
+                min-width: 16px;
+            }
+            
+            .tab-content {
+                padding: 10px;
+            }
+            
+            .input-section {
+                padding: 12px;
+            }
+            
+            .filters {
+                padding: 12px;
+                gap: 10px;
+            }
+            
+            .action-bar {
+                padding: 12px;
+            }
+            
+            .action-bar-buttons {
+                gap: 6px;
+            }
+            
+            button {
+                padding: 10px 12px;
+                font-size: 12px;
+                min-height: 40px;
+            }
+            
+            .user-list {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 10px;
+            }
+            
+            .user-card {
+                padding: 10px;
+            }
+            
+            .avatar {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .username {
+                font-size: 12px;
+            }
+            
+            .user-details {
+                font-size: 11px;
+            }
+            
+            .user-action-btn {
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+            
+            .profile-link {
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+            
+            .checkbox {
+                width: 24px;
+                height: 24px;
+            }
+            
+            .checkbox::before {
+                font-size: 12px;
+            }
+        }
+        
+        /* تحسينات إضافية للأزرار */
+        .btn-primary, .btn-danger, .btn-warning, .btn-info {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-primary::after, .btn-danger::after, .btn-warning::after, .btn-info::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+        
+        .btn-primary:hover::after, .btn-danger:hover::after, .btn-warning:hover::after, .btn-info:hover::after {
+            opacity: 1;
+        }
+        
+        /* تحسينات خاصة لزر تحميل البيانات */
+        #checkBtn {
+            margin-top: 15px;
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 800;
+        }
+        
+        @media (min-width: 768px) {
+            #checkBtn {
+                width: auto;
+                padding: 16px 28px;
+            }
+        }
+        
+        /* تحسينات إضافية لشكل الـ checkbox */
+        .checkbox:checked {
+            animation: pulse 0.5s;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* تحسينات لشريط الإحصائيات في الشاشات الصغيرة */
+        @media (max-width: 480px) {
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-item:nth-child(5) {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ GitHub Manager Pro</h1>
+            <p class="description">إدارة متابعات GitHub مع فلاتر متقدمة وإجراءات ذكية</p>
+        </header>
+        
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item">
+                <div class="stat-value" id="followersCount">0</div>
+                <div class="stat-label">المتابعين</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="followingCount">0</div>
+                <div class="stat-label">المتابَعين</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="unfollowersCount">0</div>
+                <div class="stat-label">غير المتابعين</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="notMutualsCount">0</div>
+                <div class="stat-label">غير المتبادلين</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="whitelistCount">0</div>
+                <div class="stat-label">القائمة البيضاء</div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="unfollowers">
+                غير المتابعين
+                <span class="tab-badge" id="unfollowersBadge">0</span>
+            </div>
+            <div class="tab" data-tab="notMutuals">
+                غير المتبادلين
+                <span class="tab-badge" id="notMutualsBadge">0</span>
+            </div>
+            <div class="tab" data-tab="followers">
+                المتابعين
+                <span class="tab-badge" id="followersBadge">0</span>
+            </div>
+            <div class="tab" data-tab="following">
+                المتابَعين
+                <span class="tab-badge" id="followingBadge">0</span>
+            </div>
+            <div class="tab" data-tab="whitelist">
+                القائمة البيضاء
+                <span class="tab-badge" id="whitelistBadge">0</span>
+            </div>
+            <div class="tab" data-tab="slowUnfollow">
+                إلغاء المتابعة البطيء
+            </div>
+        </div>
+        
+        <!-- تبويب غير المتابعين -->
+        <div class="tab-content active" id="unfollowers-tab">
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="username">🔍 اسم المستخدم على GitHub</label>
+                    <input type="text" id="username" placeholder="أدخل اسم المستخدم بدون @" value="Maher-Elmair">
+                </div>
+                
+                <div class="form-group">
+                    <label for="token">🔑 رمز الوصول الشخصي - اختياري</label>
+                    <input type="password" id="token" placeholder="أدخل رمز الوصول الشخصي (اختياري)">
+                    <small style="display: block; margin-top: 8px;">بدون الرمز، يمكنك فقط عرض البيانات. لإجراء أي إجراءات تحتاج للرمز.</small>
+                </div>
+                
+                <div class="token-instructions">
+                    <details>
+                        <summary>📝 كيفية إنشاء رمز الوصول الشخصي</summary>
+                        <ol>
+                            <li>اذهب إلى <strong>GitHub Settings</strong> → <strong>Developer settings</strong></li>
+                            <li>انقر على <strong>Personal access tokens</strong> → <strong>Tokens (classic)</strong></li>
+                            <li>انقر <strong>Generate new token</strong></li>
+                            <li>اختر الصلاحيات: <code>repo</code>, <code>user</code></li>
+                            <li>انسخ الرمز واحفظه بأمان</li>
+                        </ol>
+                    </details>
+                </div>
+                
+                <button id="checkBtn" class="btn-primary">
+                    <span>🚀 تحميل البيانات</span>
+                </button>
+            </div>
+            
+            <div class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchUnfollowers" placeholder="🔎 بحث...">
+                    <button id="clearSearchUnfollowers" class="btn-info">مسح</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sortUnfollowers">ترتيب</label>
+                    <select id="sortUnfollowers">
+                        <option value="username">الاسم</option>
+                        <option value="recent">الأحدث</option>
+                        <option value="oldest">الأقدم</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="filterUnfollowers">تصفية</label>
+                    <select id="filterUnfollowers">
+                        <option value="all">الكل</option>
+                        <option value="selected">المحددين</option>
+                        <option value="notSelected">غير المحددين</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="action-bar">
+                <div class="selected-count" id="selectedUnfollowersCount">0 محدَد</div>
+                <div class="action-bar-buttons">
+                    <button id="selectAllUnfollowers" class="btn-warning">تحديد الكل</button>
+                    <button id="deselectAllUnfollowers" class="btn-warning">إلغاء</button>
+                    <button id="unfollowSelectedUnfollowers" class="btn-danger">إلغاء المتابعة</button>
+                    <button id="followSelectedUnfollowers" class="btn-primary" style="display: none;">متابعة المحددين</button>
+                    <button id="addToWhitelistUnfollowers" class="btn-primary">قائمة بيضاء</button>
+                </div>
+            </div>
+            
+            <div class="results">
+                <h3>📋 غير المتابعين</h3>
+                <div class="user-list" id="unfollowersList"></div>
+                <div class="pagination" id="unfollowersPagination"></div>
+            </div>
+        </div>
+        
+        <!-- تبويب غير المتبادلين -->
+        <div class="tab-content" id="notMutuals-tab">
+            <div class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchNotMutuals" placeholder="🔎 بحث...">
+                    <button id="clearSearchNotMutuals" class="btn-info">مسح</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sortNotMutuals">ترتيب</label>
+                    <select id="sortNotMutuals">
+                        <option value="username">الاسم</option>
+                        <option value="recent">الأحدث</option>
+                        <option value="oldest">الأقدم</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="filterNotMutuals">تصفية</label>
+                    <select id="filterNotMutuals">
+                        <option value="all">الكل</option>
+                        <option value="selected">المحددين</option>
+                        <option value="notSelected">غير المحددين</option>
+                        <option value="iFollow">أتابعهم</option>
+                        <option value="theyFollow">يتابعونني</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="action-bar">
+                <div class="selected-count" id="selectedNotMutualsCount">0 محدَد</div>
+                <div class="action-bar-buttons">
+                    <button id="selectAllNotMutuals" class="btn-warning">تحديد الكل</button>
+                    <button id="deselectAllNotMutuals" class="btn-warning">إلغاء</button>
+                    <button id="unfollowSelectedNotMutuals" class="btn-danger">إلغاء المتابعة</button>
+                    <button id="followSelectedNotMutuals" class="btn-primary" style="display: none;">متابعة المحددين</button>
+                    <button id="addToWhitelistNotMutuals" class="btn-primary">قائمة بيضاء</button>
+                </div>
+            </div>
+            
+            <div class="results">
+                <h3>📋 غير المتبادلين</h3>
+                <div class="user-list" id="notMutualsList"></div>
+                <div class="pagination" id="notMutualsPagination"></div>
+            </div>
+        </div>
+        
+        <!-- تبويب المتابعين -->
+        <div class="tab-content" id="followers-tab">
+            <div class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchFollowers" placeholder="🔎 بحث...">
+                    <button id="clearSearchFollowers" class="btn-info">مسح</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sortFollowers">ترتيب</label>
+                    <select id="sortFollowers">
+                        <option value="username">الاسم</option>
+                        <option value="recent">الأحدث</option>
+                        <option value="oldest">الأقدم</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="action-bar">
+                <div class="selected-count" id="selectedFollowersCount">0 محدَد</div>
+                <div class="action-bar-buttons">
+                    <button id="selectAllFollowers" class="btn-warning">تحديد الكل</button>
+                    <button id="deselectAllFollowers" class="btn-warning">إلغاء</button>
+                    <button id="followBackSelected" class="btn-primary">متابعة المحددين</button>
+                </div>
+            </div>
+            
+            <div class="results">
+                <h3>📋 المتابعين</h3>
+                <div class="user-list" id="followersList"></div>
+                <div class="pagination" id="followersPagination"></div>
+            </div>
+        </div>
+        
+        <!-- تبويب المتابَعين -->
+        <div class="tab-content" id="following-tab">
+            <div class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchFollowing" placeholder="🔎 بحث...">
+                    <button id="clearSearchFollowing" class="btn-info">مسح</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sortFollowing">ترتيب</label>
+                    <select id="sortFollowing">
+                        <option value="username">الاسم</option>
+                        <option value="recent">الأحدث</option>
+                        <option value="oldest">الأقدم</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="filterFollowing">تصفية</label>
+                    <select id="filterFollowing">
+                        <option value="all">الكل</option>
+                        <option value="selected">المحددين</option>
+                        <option value="notSelected">غير المحددين</option>
+                        <option value="mutual">المتبادلين</option>
+                        <option value="notMutual">غير المتبادلين</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="action-bar">
+                <div class="selected-count" id="selectedFollowingCount">0 محدَد</div>
+                <div class="action-bar-buttons">
+                    <button id="selectAllFollowing" class="btn-warning">تحديد الكل</button>
+                    <button id="deselectAllFollowing" class="btn-warning">إلغاء</button>
+                    <button id="unfollowSelectedFollowing" class="btn-danger">إلغاء المتابعة</button>
+                    <button id="followSelectedFollowing" class="btn-primary" style="display: none;">متابعة المحددين</button>
+                    <button id="addToWhitelistFollowing" class="btn-primary">قائمة بيضاء</button>
+                </div>
+            </div>
+            
+            <div class="results">
+                <h3>📋 المتابَعين</h3>
+                <div class="user-list" id="followingList"></div>
+                <div class="pagination" id="followingPagination"></div>
+            </div>
+        </div>
+        
+        <!-- تبويب القائمة البيضاء -->
+        <div class="tab-content" id="whitelist-tab">
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="whitelistUsername">➕ إضافة للقائمة البيضاء</label>
+                    <input type="text" id="whitelistUsername" placeholder="أدخل اسم المستخدم">
+                </div>
+                <button id="addToWhitelistManualBtn" class="btn-primary">
+                    <span>إضافة</span>
+                </button>
+            </div>
+            
+            <div class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchWhitelist" placeholder="🔎 بحث...">
+                    <button id="clearSearchWhitelist" class="btn-info">مسح</button>
+                </div>
+            </div>
+            
+            <div class="action-bar">
+                <div class="selected-count" id="selectedWhitelistCount">0 محدَد</div>
+                <div class="action-bar-buttons">
+                    <button id="selectAllWhitelist" class="btn-warning">تحديد الكل</button>
+                    <button id="deselectAllWhitelist" class="btn-warning">إلغاء</button>
+                    <button id="removeSelectedWhitelist" class="btn-danger">إزالة المحددين</button>
+                </div>
+            </div>
+            
+            <div class="results">
+                <h3>📋 القائمة البيضاء</h3>
+                <div class="user-list" id="whitelistList"></div>
+            </div>
+        </div>
+        
+        <!-- تبويب إلغاء المتابعة البطيء -->
+        <div class="tab-content" id="slowUnfollow-tab">
+            <div class="instructions">
+                <h3>⏱️ إلغاء المتابعة البطيء</h3>
+                <p>ميزة آمنة لإلغاء المتابعة بشكل تدريجي لتجنب الحظر من GitHub.</p>
+                <p>معدل الإلغاء: 1-2 مستخدم كل دقيقة.</p>
+            </div>
+            
+            <div class="slow-unfollow-section">
+                <div class="form-group">
+                    <label for="slowUnfollowUsers">المستخدمين المستهدفين</label>
+                    <select id="slowUnfollowUsers" multiple style="height: 120px;">
+                        <option value="unfollowers">غير المتابعين</option>
+                        <option value="notMutuals">غير المتبادلين</option>
+                        <option value="following">جميع المتابَعين</option>
+                        <option value="custom">قائمة مخصصة</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="customUsersSection" style="display: none;">
+                    <label for="customUsers">أسماء المستخدمين (مفصولة بفاصلة)</label>
+                    <input type="text" id="customUsers" placeholder="user1, user2, user3">
+                </div>
+                
+                <div class="form-group">
+                    <label for="unfollowSpeed">سرعة الإلغاء</label>
+                    <select id="unfollowSpeed">
+                        <option value="slow">بطيء (1/دقيقة)</option>
+                        <option value="medium">متوسط (2/دقيقة)</option>
+                        <option value="fast" disabled>سريع - غير موصى</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxUnfollows">الحد الأقصى</label>
+                    <input type="number" id="maxUnfollows" min="1" max="100" value="10">
+                </div>
+                
+                <button id="startSlowUnfollow" class="btn-danger" style="width: 100%; margin-bottom: 10px;">بدء الإلغاء</button>
+                <button id="stopSlowUnfollow" class="btn-warning" disabled style="width: 100%;">إيقاف</button>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="unfollowProgress"></div>
+                </div>
+                
+                <div class="unfollow-status" id="unfollowStatus">جاهز للبدء</div>
+            </div>
+        </div>
+        
+        <!-- عناصر الرسائل -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>جاري تحميل البيانات...</p>
+        </div>
+        
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+        
+        <footer>
+            <p>💻 GitHub Manager Pro | 🔒 آمن تماماً</p>
+        </footer>
+    </div>
+
+    <script>
+        const state = {
+            followers: [],
+            following: [],
+            unfollowers: [],
+            notMutuals: [],
+            whitelist: JSON.parse(localStorage.getItem('githubWhitelist')) || [],
+            selectedUsers: {
+                unfollowers: new Set(),
+                notMutuals: new Set(),
+                followers: new Set(),
+                following: new Set(),
+                whitelist: new Set()
+            },
+            currentTab: 'unfollowers',
+            pagination: {
+                unfollowers: { current: 1, perPage: 20 },
+                notMutuals: { current: 1, perPage: 20 },
+                followers: { current: 1, perPage: 20 },
+                following: { current: 1, perPage: 20 }
+            },
+            filters: {
+                unfollowers: { search: '', sort: 'username', filter: 'all' },
+                notMutuals: { search: '', sort: 'username', filter: 'all' },
+                followers: { search: '', sort: 'username', filter: 'all' },
+                following: { search: '', sort: 'username', filter: 'all' },
+                whitelist: { search: '' }
+            },
+            slowUnfollow: {
+                active: false,
+                currentIndex: 0,
+                total: 0,
+                interval: null
+            },
+            userDataCache: new Map()
+        };
+
+        let elements = {};
+
+        function initializeElements() {
+            try {
+                elements = {
+                    tabs: document.querySelectorAll('.tab'),
+                    tabContents: document.querySelectorAll('.tab-content'),
+                    username: document.getElementById('username'),
+                    token: document.getElementById('token'),
+                    checkBtn: document.getElementById('checkBtn'),
+                    loading: document.getElementById('loading'),
+                    error: document.getElementById('error'),
+                    success: document.getElementById('success'),
+                    followersCount: document.getElementById('followersCount'),
+                    followingCount: document.getElementById('followingCount'),
+                    unfollowersCount: document.getElementById('unfollowersCount'),
+                    notMutualsCount: document.getElementById('notMutualsCount'),
+                    whitelistCount: document.getElementById('whitelistCount'),
+                    unfollowersBadge: document.getElementById('unfollowersBadge'),
+                    notMutualsBadge: document.getElementById('notMutualsBadge'),
+                    followersBadge: document.getElementById('followersBadge'),
+                    followingBadge: document.getElementById('followingBadge'),
+                    whitelistBadge: document.getElementById('whitelistBadge'),
+                    searchUnfollowers: document.getElementById('searchUnfollowers'),
+                    clearSearchUnfollowers: document.getElementById('clearSearchUnfollowers'),
+                    sortUnfollowers: document.getElementById('sortUnfollowers'),
+                    filterUnfollowers: document.getElementById('filterUnfollowers'),
+                    selectedUnfollowersCount: document.getElementById('selectedUnfollowersCount'),
+                    selectAllUnfollowers: document.getElementById('selectAllUnfollowers'),
+                    deselectAllUnfollowers: document.getElementById('deselectAllUnfollowers'),
+                    unfollowSelectedUnfollowers: document.getElementById('unfollowSelectedUnfollowers'),
+                    followSelectedUnfollowers: document.getElementById('followSelectedUnfollowers'),
+                    addToWhitelistUnfollowers: document.getElementById('addToWhitelistUnfollowers'),
+                    unfollowersList: document.getElementById('unfollowersList'),
+                    unfollowersPagination: document.getElementById('unfollowersPagination'),
+                    searchNotMutuals: document.getElementById('searchNotMutuals'),
+                    clearSearchNotMutuals: document.getElementById('clearSearchNotMutuals'),
+                    sortNotMutuals: document.getElementById('sortNotMutuals'),
+                    filterNotMutuals: document.getElementById('filterNotMutuals'),
+                    selectedNotMutualsCount: document.getElementById('selectedNotMutualsCount'),
+                    selectAllNotMutuals: document.getElementById('selectAllNotMutuals'),
+                    deselectAllNotMutuals: document.getElementById('deselectAllNotMutuals'),
+                    unfollowSelectedNotMutuals: document.getElementById('unfollowSelectedNotMutuals'),
+                    followSelectedNotMutuals: document.getElementById('followSelectedNotMutuals'),
+                    addToWhitelistNotMutuals: document.getElementById('addToWhitelistNotMutuals'),
+                    notMutualsList: document.getElementById('notMutualsList'),
+                    notMutualsPagination: document.getElementById('notMutualsPagination'),
+                    searchFollowers: document.getElementById('searchFollowers'),
+                    clearSearchFollowers: document.getElementById('clearSearchFollowers'),
+                    sortFollowers: document.getElementById('sortFollowers'),
+                    selectedFollowersCount: document.getElementById('selectedFollowersCount'),
+                    selectAllFollowers: document.getElementById('selectAllFollowers'),
+                    deselectAllFollowers: document.getElementById('deselectAllFollowers'),
+                    followBackSelected: document.getElementById('followBackSelected'),
+                    followersList: document.getElementById('followersList'),
+                    followersPagination: document.getElementById('followersPagination'),
+                    searchFollowing: document.getElementById('searchFollowing'),
+                    clearSearchFollowing: document.getElementById('clearSearchFollowing'),
+                    sortFollowing: document.getElementById('sortFollowing'),
+                    filterFollowing: document.getElementById('filterFollowing'),
+                    selectedFollowingCount: document.getElementById('selectedFollowingCount'),
+                    selectAllFollowing: document.getElementById('selectAllFollowing'),
+                    deselectAllFollowing: document.getElementById('deselectAllFollowing'),
+                    unfollowSelectedFollowing: document.getElementById('unfollowSelectedFollowing'),
+                    followSelectedFollowing: document.getElementById('followSelectedFollowing'),
+                    addToWhitelistFollowing: document.getElementById('addToWhitelistFollowing'),
+                    followingList: document.getElementById('followingList'),
+                    followingPagination: document.getElementById('followingPagination'),
+                    whitelistUsername: document.getElementById('whitelistUsername'),
+                    addToWhitelistManualBtn: document.getElementById('addToWhitelistManualBtn'),
+                    searchWhitelist: document.getElementById('searchWhitelist'),
+                    clearSearchWhitelist: document.getElementById('clearSearchWhitelist'),
+                    selectedWhitelistCount: document.getElementById('selectedWhitelistCount'),
+                    selectAllWhitelist: document.getElementById('selectAllWhitelist'),
+                    deselectAllWhitelist: document.getElementById('deselectAllWhitelist'),
+                    removeSelectedWhitelist: document.getElementById('removeSelectedWhitelist'),
+                    whitelistList: document.getElementById('whitelistList'),
+                    slowUnfollowUsers: document.getElementById('slowUnfollowUsers'),
+                    customUsersSection: document.getElementById('customUsersSection'),
+                    customUsers: document.getElementById('customUsers'),
+                    unfollowSpeed: document.getElementById('unfollowSpeed'),
+                    maxUnfollows: document.getElementById('maxUnfollows'),
+                    startSlowUnfollow: document.getElementById('startSlowUnfollow'),
+                    stopSlowUnfollow: document.getElementById('stopSlowUnfollow'),
+                    unfollowProgress: document.getElementById('unfollowProgress'),
+                    unfollowStatus: document.getElementById('unfollowStatus')
+                };
+            } catch (error) {
+                console.error('خطأ في تهيئة عناصر DOM:', error);
+            }
+        }
+
+        function checkEssentialElements() {
+            const essentialElements = ['error', 'success', 'loading', 'checkBtn'];
+            const missingElements = [];
+            
+            for (const elementId of essentialElements) {
+                if (!document.getElementById(elementId)) {
+                    missingElements.push(elementId);
+                }
+            }
+            
+            if (missingElements.length > 0) {
+                console.error('العناصر التالية غير موجودة في DOM:', missingElements);
+                return false;
+            }
+            
+            return true;
+        }
+
+        function setupEventListeners() {
+            if (!checkEssentialElements()) {
+                console.error('لا يمكن إعداد الأحداث بسبب عدم وجود عناصر DOM أساسية');
+                return;
+            }
+            
+            if (elements.tabs) {
+                elements.tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const tabId = tab.getAttribute('data-tab');
+                        switchTab(tabId);
+                    });
+                });
+            }
+
+            if (elements.checkBtn) {
+                elements.checkBtn.addEventListener('click', loadGitHubData);
+            }
+            
+            setupTabEventListeners('unfollowers');
+            setupTabEventListeners('notMutuals');
+            setupTabEventListeners('followers');
+            setupTabEventListeners('following');
+            
+            if (elements.addToWhitelistManualBtn) {
+                elements.addToWhitelistManualBtn.addEventListener('click', addToWhitelistManual);
+            }
+            if (elements.searchWhitelist) {
+                elements.searchWhitelist.addEventListener('input', () => {
+                    state.filters.whitelist.search = elements.searchWhitelist.value;
+                    renderWhitelist();
+                });
+            }
+            if (elements.clearSearchWhitelist) {
+                elements.clearSearchWhitelist.addEventListener('click', () => {
+                    elements.searchWhitelist.value = '';
+                    state.filters.whitelist.search = '';
+                    renderWhitelist();
+                });
+            }
+            if (elements.selectAllWhitelist) {
+                elements.selectAllWhitelist.addEventListener('click', () => selectAllUsers('whitelist'));
+            }
+            if (elements.deselectAllWhitelist) {
+                elements.deselectAllWhitelist.addEventListener('click', () => deselectAllUsers('whitelist'));
+            }
+            if (elements.removeSelectedWhitelist) {
+                elements.removeSelectedWhitelist.addEventListener('click', removeSelectedFromWhitelist);
+            }
+            
+            if (elements.slowUnfollowUsers) {
+                elements.slowUnfollowUsers.addEventListener('change', handleSlowUnfollowUsersChange);
+            }
+            if (elements.startSlowUnfollow) {
+                elements.startSlowUnfollow.addEventListener('click', startSlowUnfollow);
+            }
+            if (elements.stopSlowUnfollow) {
+                elements.stopSlowUnfollow.addEventListener('click', stopSlowUnfollow);
+            }
+            
+            renderWhitelist();
+            updateStats();
+        }
+
+        function setupTabEventListeners(tabName) {
+            const capitalizedTabName = capitalizeFirst(tabName);
+            
+            if (elements[`search${capitalizedTabName}`]) {
+                elements[`search${capitalizedTabName}`].addEventListener('input', () => {
+                    state.filters[tabName].search = elements[`search${capitalizedTabName}`].value;
+                    renderTab(tabName);
+                });
+            }
+            
+            if (elements[`clearSearch${capitalizedTabName}`]) {
+                elements[`clearSearch${capitalizedTabName}`].addEventListener('click', () => {
+                    elements[`search${capitalizedTabName}`].value = '';
+                    state.filters[tabName].search = '';
+                    renderTab(tabName);
+                });
+            }
+            
+            if (elements[`sort${capitalizedTabName}`]) {
+                elements[`sort${capitalizedTabName}`].addEventListener('change', () => {
+                    state.filters[tabName].sort = elements[`sort${capitalizedTabName}`].value;
+                    renderTab(tabName);
+                });
+            }
+            
+            if (elements[`filter${capitalizedTabName}`]) {
+                elements[`filter${capitalizedTabName}`].addEventListener('change', () => {
+                    state.filters[tabName].filter = elements[`filter${capitalizedTabName}`].value;
+                    renderTab(tabName);
+                });
+            }
+            
+            if (elements[`selectAll${capitalizedTabName}`]) {
+                elements[`selectAll${capitalizedTabName}`].addEventListener('click', () => selectAllUsers(tabName));
+            }
+            
+            if (elements[`deselectAll${capitalizedTabName}`]) {
+                elements[`deselectAll${capitalizedTabName}`].addEventListener('click', () => deselectAllUsers(tabName));
+            }
+            
+            if (elements[`unfollowSelected${capitalizedTabName}`]) {
+                elements[`unfollowSelected${capitalizedTabName}`].addEventListener('click', () => unfollowSelectedUsers(tabName));
+            }
+            
+            if (elements[`followSelected${capitalizedTabName}`]) {
+                elements[`followSelected${capitalizedTabName}`].addEventListener('click', () => followSelectedUsers(tabName));
+            }
+            
+            if (elements[`addToWhitelist${capitalizedTabName}`]) {
+                elements[`addToWhitelist${capitalizedTabName}`].addEventListener('click', () => addSelectedToWhitelist(tabName));
+            }
+            
+            if (tabName === 'followers' && elements.followBackSelected) {
+                elements.followBackSelected.addEventListener('click', () => followBackSelectedUsers());
+            }
+        }
+
+        function switchTab(tabId) {
+            state.currentTab = tabId;
+            
+            if (elements.tabs) {
+                elements.tabs.forEach(tab => {
+                    if (tab.getAttribute('data-tab') === tabId) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
+            }
+
+            if (elements.tabContents) {
+                elements.tabContents.forEach(content => {
+                    if (content.id === `${tabId}-tab`) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            }
+            
+            updateSelectedCount(tabId);
+            updateActionBarButtons(tabId);
+        }
+
+        async function loadGitHubData() {
+            if (!elements.error || !elements.success || !elements.loading || !elements.checkBtn) {
+                console.error('عناصر DOM الأساسية غير متاحة');
+                showError('خطأ في تحميل التطبيق. يرجى تحديث الصفحة.');
+                return;
+            }
+            
+            const username = elements.username ? elements.username.value.trim() : '';
+            const token = elements.token ? elements.token.value.trim() : '';
+            
+            elements.error.style.display = 'none';
+            elements.success.style.display = 'none';
+            
+            if (!username) {
+                showError('يرجى إدخال اسم المستخدم');
+                return;
+            }
+            
+            elements.loading.style.display = 'block';
+            elements.checkBtn.disabled = true;
+            
+            try {
+                const headers = {
+                    'Accept': 'application/vnd.github.v3+json'
+                };
+                
+                if (token) {
+                    headers['Authorization'] = `token ${token}`;
+                }
+                
+                const userCheck = await fetch(`https://api.github.com/users/${username}`, { headers });
+                if (!userCheck.ok) {
+                    if (userCheck.status === 404) {
+                        throw new Error(`المستخدم "${username}" غير موجود على GitHub`);
+                    } else {
+                        throw new Error(`خطأ في التحقق من المستخدم: ${userCheck.status}`);
+                    }
+                }
+                
+                const followers = await fetchAllPages(`https://api.github.com/users/${username}/followers`, headers);
+                const following = await fetchAllPages(`https://api.github.com/users/${username}/following`, headers);
+                
+                state.followers = followers;
+                state.following = following;
+                
+                state.unfollowers = following.filter(user => 
+                    !followers.some(f => f.login === user.login) && 
+                    !state.whitelist.includes(user.login)
+                );
+                
+                state.notMutuals = [
+                    ...following.filter(user => !followers.some(f => f.login === user.login)),
+                    ...followers.filter(user => !following.some(f => f.login === user.login))
+                ];
+                
+                await cacheUserData([...followers, ...following]);
+                
+                renderAllTabs();
+                showSuccess(`تم تحميل ${followers.length} متابع و${following.length} متابع بنجاح!`);
+                updateStats();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                
+                if (error.message.includes('403') || error.message.includes('rate limit')) {
+                    showError('تجاوزت الحد المسموح به للطلبات. جرب استخدام رمز وصول شخصي أو حاول مرة أخرى لاحقًا.');
+                } else {
+                    showError(`حدث خطأ: ${error.message}`);
+                }
+            } finally {
+                if (elements.loading) {
+                    elements.loading.style.display = 'none';
+                }
+                if (elements.checkBtn) {
+                    elements.checkBtn.disabled = false;
+                }
+            }
+        }
+
+        async function cacheUserData(users) {
+            const token = elements.token ? elements.token.value.trim() : '';
+            const headers = {
+                'Accept': 'application/vnd.github.v3+json'
+            };
+            
+            if (token) {
+                headers['Authorization'] = `token ${token}`;
+            }
+            
+            for (const user of users) {
+                if (!state.userDataCache.has(user.login)) {
+                    state.userDataCache.set(user.login, user);
+                }
+            }
+            
+            for (const username of state.whitelist) {
+                if (!state.userDataCache.has(username)) {
+                    try {
+                        const userData = await fetch(`https://api.github.com/users/${username}`, { headers });
+                        if (userData.ok) {
+                            const user = await userData.json();
+                            state.userDataCache.set(username, user);
+                        }
+                    } catch (error) {
+                        console.error(`Failed to fetch data for ${username}:`, error);
+                    }
+                }
+            }
+        }
+
+        async function fetchAllPages(url, headers) {
+            let allData = [];
+            let page = 1;
+            let hasNextPage = true;
+            
+            while (hasNextPage) {
+                const response = await fetch(`${url}?page=${page}&per_page=100`, { headers });
+                
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        const resetTime = response.headers.get('x-ratelimit-reset');
+                        if (resetTime) {
+                            const resetDate = new Date(resetTime * 1000);
+                            throw new Error(`تجاوزت الحد المسموح به للطلبات. حاول مرة أخرى في: ${resetDate.toLocaleTimeString()}`);
+                        }
+                        throw new Error('تجاوزت الحد المسموح به للطلبات. جرب استخدام رمز وصول شخصي.');
+                    }
+                    throw new Error(`خطأ في GitHub API: ${response.status} - ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                allData = allData.concat(data);
+                
+                const linkHeader = response.headers.get('Link');
+                hasNextPage = linkHeader && linkHeader.includes('rel="next"');
+                page++;
+                
+                if (hasNextPage) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+            }
+            
+            return allData;
+        }
+
+        function renderAllTabs() {
+            renderTab('unfollowers');
+            renderTab('notMutuals');
+            renderTab('followers');
+            renderTab('following');
+            updateStats();
+        }
+
+        function renderTab(tabName) {
+            let data = [];
+            
+            switch (tabName) {
+                case 'unfollowers':
+                    data = state.unfollowers;
+                    break;
+                case 'notMutuals':
+                    data = state.notMutuals;
+                    break;
+                case 'followers':
+                    data = state.followers;
+                    break;
+                case 'following':
+                    data = state.following;
+                    break;
+            }
+            
+            const filteredData = applyFilters(data, tabName);
+            const pagination = state.pagination[tabName];
+            const startIndex = (pagination.current - 1) * pagination.perPage;
+            const paginatedData = filteredData.slice(startIndex, startIndex + pagination.perPage);
+            
+            const listElement = elements[`${tabName}List`];
+            if (!listElement) return;
+            
+            listElement.innerHTML = paginatedData.map((user, index) => {
+                const isFollowing = state.following.some(f => f.login === user.login);
+                const isFollower = state.followers.some(f => f.login === user.login);
+                const isInWhitelist = state.whitelist.includes(user.login);
+                let followStatus = '';
+                
+                if (isFollowing && isFollower) {
+                    followStatus = '<div class="follow-status mutual">متبادل</div>';
+                } else if (isFollowing) {
+                    followStatus = '<div class="follow-status following">أتابعه</div>';
+                } else if (isFollower) {
+                    followStatus = '<div class="follow-status not-following">لا أتابعه</div>';
+                }
+                
+                let whitelistButton = '';
+                if (tabName !== 'whitelist') {
+                    if (isInWhitelist) {
+                        whitelistButton = `<button class="user-action-btn btn-danger" onclick="removeFromWhitelist('${user.login}')">حذف من القائمة البيضاء</button>`;
+                    } else {
+                        whitelistButton = `<button class="user-action-btn btn-primary" onclick="addToWhitelist('${user.login}')">إضافة للقائمة البيضاء</button>`;
+                    }
+                }
+                
+                let followButton = '';
+                if (tabName === 'followers' && !isFollowing) {
+                    followButton = `<button class="user-action-btn btn-primary" onclick="followUser('${user.login}')">متابعة</button>`;
+                } else if (tabName === 'notMutuals' && isFollower && !isFollowing) {
+                    followButton = `<button class="user-action-btn btn-primary" onclick="followUser('${user.login}')">متابعة</button>`;
+                }
+                
+                let unfollowButton = '';
+                if (tabName !== 'followers' && isFollowing) {
+                    unfollowButton = `<button class="user-action-btn btn-danger" onclick="unfollowUser('${user.login}', '${tabName}')">إلغاء المتابعة</button>`;
+                }
+                
+                return `
+                <div class="user-card ${state.selectedUsers[tabName].has(user.login) ? 'selected' : ''} ${isInWhitelist ? 'whitelisted' : ''}" data-username="${user.login}">
+                    <input type="checkbox" class="checkbox" id="${tabName}-user-${index}" 
+                           ${state.selectedUsers[tabName].has(user.login) ? 'checked' : ''} 
+                           onchange="toggleUserSelection('${tabName}', '${user.login}')">
+                    <img src="${user.avatar_url}" alt="${user.login}" class="avatar">
+                    <div class="username">${user.login}</div>
+                    ${followStatus}
+                    <div class="user-details">
+                        ${tabName === 'notMutuals' ? getNotMutualType(user.login) : ''}
+                    </div>
+                    <a href="${user.html_url}" target="_blank" class="profile-link">عرض الملف</a>
+                    <div class="user-actions">
+                        ${unfollowButton}
+                        ${followButton}
+                        ${whitelistButton}
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            renderPagination(tabName, filteredData.length);
+            updateSelectedCount(tabName);
+            updateActionBarButtons(tabName);
+        }
+
+        function updateActionBarButtons(tabName) {
+            if (tabName === 'followers' || tabName === 'whitelist') return;
+            
+            const followButton = elements[`followSelected${capitalizeFirst(tabName)}`];
+            const unfollowButton = elements[`unfollowSelected${capitalizeFirst(tabName)}`];
+            
+            if (!followButton || !unfollowButton) return;
+            
+            const selectedUsers = Array.from(state.selectedUsers[tabName]);
+            const hasNonFollowing = selectedUsers.some(username => 
+                !state.following.some(f => f.login === username)
+            );
+            
+            if (hasNonFollowing && selectedUsers.length > 0) {
+                followButton.style.display = 'inline-block';
+                unfollowButton.style.display = 'none';
+            } else {
+                followButton.style.display = 'none';
+                unfollowButton.style.display = 'inline-block';
+            }
+        }
+
+        function applyFilters(data, tabName) {
+            const filters = state.filters[tabName];
+            let filteredData = [...data];
+            
+            if (filters.search) {
+                filteredData = filteredData.filter(user => 
+                    user.login.toLowerCase().includes(filters.search.toLowerCase())
+                );
+            }
+            
+            if (filters.sort === 'username') {
+                filteredData.sort((a, b) => a.login.localeCompare(b.login));
+            } else if (filters.sort === 'recent') {
+                filteredData.sort((a, b) => a.login.localeCompare(b.login));
+            } else if (filters.sort === 'oldest') {
+                filteredData.sort((a, b) => b.login.localeCompare(a.login));
+            }
+            
+            if (filters.filter === 'selected') {
+                filteredData = filteredData.filter(user => state.selectedUsers[tabName].has(user.login));
+            } else if (filters.filter === 'notSelected') {
+                filteredData = filteredData.filter(user => !state.selectedUsers[tabName].has(user.login));
+            } else if (tabName === 'notMutuals' && filters.filter === 'iFollow') {
+                filteredData = filteredData.filter(user => 
+                    state.following.some(f => f.login === user.login) && 
+                    !state.followers.some(f => f.login === user.login)
+                );
+            } else if (tabName === 'notMutuals' && filters.filter === 'theyFollow') {
+                filteredData = filteredData.filter(user => 
+                    state.followers.some(f => f.login === user.login) && 
+                    !state.following.some(f => f.login === user.login)
+                );
+            } else if (tabName === 'following' && filters.filter === 'mutual') {
+                filteredData = filteredData.filter(user => 
+                    state.followers.some(f => f.login === user.login)
+                );
+            } else if (tabName === 'following' && filters.filter === 'notMutual') {
+                filteredData = filteredData.filter(user => 
+                    !state.followers.some(f => f.login === user.login)
+                );
+            }
+            
+            return filteredData;
+        }
+
+        function renderPagination(tabName, totalItems) {
+            const pagination = state.pagination[tabName];
+            const totalPages = Math.ceil(totalItems / pagination.perPage);
+            const paginationElement = elements[`${tabName}Pagination`];
+            
+            if (!paginationElement || totalPages <= 1) {
+                if (paginationElement) {
+                    paginationElement.innerHTML = '';
+                }
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            if (pagination.current > 1) {
+                paginationHTML += `<button class="btn-info" onclick="changePage('${tabName}', ${pagination.current - 1})">السابق</button>`;
+            }
+            
+            paginationHTML += `<div class="page-info">صفحة ${pagination.current}/${totalPages}</div>`;
+            
+            if (pagination.current < totalPages) {
+                paginationHTML += `<button class="btn-info" onclick="changePage('${tabName}', ${pagination.current + 1})">التالي</button>`;
+            }
+            
+            paginationElement.innerHTML = paginationHTML;
+        }
+
+        function changePage(tabName, page) {
+            state.pagination[tabName].current = page;
+            renderTab(tabName);
+        }
+
+        function getNotMutualType(username) {
+            const isFollowing = state.following.some(user => user.login === username);
+            const isFollower = state.followers.some(user => user.login === username);
+            
+            if (isFollowing && !isFollower) {
+                return 'أتابعه فقط';
+            } else if (!isFollowing && isFollower) {
+                return 'يتبعني فقط';
+            }
+            
+            return '';
+        }
+
+        function toggleUserSelection(tabName, username) {
+            if (state.selectedUsers[tabName].has(username)) {
+                state.selectedUsers[tabName].delete(username);
+            } else {
+                state.selectedUsers[tabName].add(username);
+            }
+            
+            const card = document.querySelector(`.user-card[data-username="${username}"]`);
+            if (card) {
+                card.classList.toggle('selected');
+            }
+            
+            updateSelectedCount(tabName);
+            updateActionBarButtons(tabName);
+        }
+
+        function selectAllUsers(tabName) {
+            let data = [];
+            
+            switch (tabName) {
+                case 'unfollowers':
+                    data = state.unfollowers;
+                    break;
+                case 'notMutuals':
+                    data = state.notMutuals;
+                    break;
+                case 'followers':
+                    data = state.followers;
+                    break;
+                case 'following':
+                    data = state.following;
+                    break;
+                case 'whitelist':
+                    data = state.whitelist.map(username => ({ login: username }));
+                    break;
+            }
+            
+            const filteredData = tabName === 'whitelist' ? 
+                applyWhitelistFilters(data) : 
+                applyFilters(data, tabName);
+            
+            filteredData.forEach(user => {
+                state.selectedUsers[tabName].add(user.login);
+            });
+            
+            if (tabName === 'whitelist') {
+                renderWhitelist();
+            } else {
+                renderTab(tabName);
+            }
+            
+            updateSelectedCount(tabName);
+            updateActionBarButtons(tabName);
+        }
+
+        function deselectAllUsers(tabName) {
+            state.selectedUsers[tabName].clear();
+            
+            if (tabName === 'whitelist') {
+                renderWhitelist();
+            } else {
+                renderTab(tabName);
+            }
+            
+            updateSelectedCount(tabName);
+            updateActionBarButtons(tabName);
+        }
+
+        function updateSelectedCount(tabName) {
+            const countElement = elements[`selected${capitalizeFirst(tabName)}Count`];
+            if (countElement) {
+                countElement.textContent = `${state.selectedUsers[tabName].size} محدَد`;
+            }
+        }
+
+        async function unfollowSelectedUsers(tabName) {
+            const selectedCount = state.selectedUsers[tabName].size;
+            
+            if (selectedCount === 0) {
+                showError('يرجى تحديد مستخدمين أولاً');
+                return;
+            }
+
+            if (!elements.token.value.trim()) {
+                showError('يرجى إدخال رمز الوصول الشخصي لإجراء هذه العملية');
+                return;
+            }
+
+            const confirmed = confirm(`هل أنت متأكد من إلغاء متابعة ${selectedCount} مستخدم؟`);
+            if (!confirmed) return;
+
+            const token = elements.token.value.trim();
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (const username of state.selectedUsers[tabName]) {
+                try {
+                    await unfollowUserAPI(username, token);
+                    successCount++;
+                    removeUserFromAllLists(username);
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                } catch (error) {
+                    console.error(`Failed to unfollow ${username}:`, error);
+                    errorCount++;
+                }
+            }
+
+            state.selectedUsers[tabName].clear();
+            renderAllTabs();
+            
+            if (errorCount === 0) {
+                showSuccess(`تم إلغاء متابعة ${successCount} مستخدم بنجاح`);
+            } else {
+                showError(`تم إلغاء متابعة ${successCount} مستخدم، وفشل ${errorCount}`);
+            }
+        }
+
+        async function followSelectedUsers(tabName) {
+            const selectedCount = state.selectedUsers[tabName].size;
+            
+            if (selectedCount === 0) {
+                showError('يرجى تحديد مستخدمين أولاً');
+                return;
+            }
+
+            if (!elements.token.value.trim()) {
+                showError('يرجى إدخال رمز الوصول الشخصي لإجراء هذه العملية');
+                return;
+            }
+
+            const confirmed = confirm(`هل أنت متأكد من متابعة ${selectedCount} مستخدم؟`);
+            if (!confirmed) return;
+
+            const token = elements.token.value.trim();
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (const username of state.selectedUsers[tabName]) {
+                try {
+                    await followUserAPI(username, token);
+                    successCount++;
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                } catch (error) {
+                    console.error(`Failed to follow ${username}:`, error);
+                    errorCount++;
+                }
+            }
+
+            await loadGitHubData();
+            state.selectedUsers[tabName].clear();
+            
+            if (errorCount === 0) {
+                showSuccess(`تمت متابعة ${successCount} مستخدم بنجاح`);
+            } else {
+                showError(`تمت متابعة ${successCount} مستخدم، وفشل ${errorCount}`);
+            }
+        }
+
+        async function unfollowUser(username, tabName) {
+            if (!elements.token.value.trim()) {
+                showError('يرجى إدخال رمز الوصول الشخصي لإجراء هذه العملية');
+                return;
+            }
+
+            const confirmed = confirm(`هل أنت متأكد من إلغاء متابعة ${username}؟`);
+            if (!confirmed) return;
+
+            try {
+                await unfollowUserAPI(username, elements.token.value.trim());
+                removeUserFromAllLists(username);
+                renderAllTabs();
+                showSuccess(`تم إلغاء متابعة ${username} بنجاح`);
+            } catch (error) {
+                console.error(`Failed to unfollow ${username}:`, error);
+                showError(`فشل في إلغاء متابعة ${username}`);
+            }
+        }
+
+        async function followUser(username) {
+            if (!elements.token.value.trim()) {
+                showError('يرجى إدخال رمز الوصول الشخصي لإجراء هذه العملية');
+                return;
+            }
+
+            try {
+                await followUserAPI(username, elements.token.value.trim());
+                await loadGitHubData();
+                showSuccess(`تمت متابعة ${username} بنجاح`);
+            } catch (error) {
+                console.error(`Failed to follow ${username}:`, error);
+                showError(`فشل في متابعة ${username}`);
+            }
+        }
+
+        async function followBackSelectedUsers() {
+            const selectedCount = state.selectedUsers.followers.size;
+            
+            if (selectedCount === 0) {
+                showError('يرجى تحديد مستخدمين أولاً');
+                return;
+            }
+
+            if (!elements.token.value.trim()) {
+                showError('يرجى إدخال رمز الوصول الشخصي لإجراء هذه العملية');
+                return;
+            }
+
+            const confirmed = confirm(`هل أنت متأكد من متابعة ${selectedCount} مستخدم؟`);
+            if (!confirmed) return;
+
+            const token = elements.token.value.trim();
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (const username of state.selectedUsers.followers) {
+                try {
+                    await followUserAPI(username, token);
+                    successCount++;
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                } catch (error) {
+                    console.error(`Failed to follow ${username}:`, error);
+                    errorCount++;
+                }
+            }
+
+            await loadGitHubData();
+            state.selectedUsers.followers.clear();
+            
+            if (errorCount === 0) {
+                showSuccess(`تمت متابعة ${successCount} مستخدم بنجاح`);
+            } else {
+                showError(`تمت متابعة ${successCount} مستخدم، وفشل ${errorCount}`);
+            }
+        }
+
+        async function unfollowUserAPI(username, token) {
+            const response = await fetch(`https://api.github.com/user/following/${username}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error ${response.status}`);
+            }
+
+            return response;
+        }
+
+        async function followUserAPI(username, token) {
+            const response = await fetch(`https://api.github.com/user/following/${username}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error ${response.status}`);
+            }
+
+            return response;
+        }
+
+        function removeUserFromAllLists(username) {
+            state.following = state.following.filter(user => user.login !== username);
+            state.unfollowers = state.unfollowers.filter(user => user.login !== username);
+            state.notMutuals = state.notMutuals.filter(user => user.login !== username);
+            
+            Object.keys(state.selectedUsers).forEach(tabName => {
+                state.selectedUsers[tabName].delete(username);
+            });
+        }
+
+        function addToWhitelist(username) {
+            if (!state.whitelist.includes(username)) {
+                state.whitelist.push(username);
+                localStorage.setItem('githubWhitelist', JSON.stringify(state.whitelist));
+                state.unfollowers = state.unfollowers.filter(user => user.login !== username);
+                state.notMutuals = state.notMutuals.filter(user => user.login !== username);
+                renderAllTabs();
+                showSuccess(`تمت إضافة ${username} إلى القائمة البيضاء`);
+            } else {
+                showError(`${username} موجود بالفعل في القائمة البيضاء`);
+            }
+        }
+
+        function addSelectedToWhitelist(tabName) {
+            const selectedCount = state.selectedUsers[tabName].size;
+            
+            if (selectedCount === 0) {
+                showError('يرجى تحديد مستخدمين أولاً');
+                return;
+            }
+
+            let addedCount = 0;
+            for (const username of state.selectedUsers[tabName]) {
+                if (!state.whitelist.includes(username)) {
+                    state.whitelist.push(username);
+                    addedCount++;
+                    state.unfollowers = state.unfollowers.filter(user => user.login !== username);
+                    state.notMutuals = state.notMutuals.filter(user => user.login !== username);
+                }
+            }
+            
+            localStorage.setItem('githubWhitelist', JSON.stringify(state.whitelist));
+            state.selectedUsers[tabName].clear();
+            renderAllTabs();
+            showSuccess(`تمت إضافة ${addedCount} مستخدم إلى القائمة البيضاء`);
+        }
+
+        function addToWhitelistManual() {
+            const username = elements.whitelistUsername.value.trim();
+            if (!username) {
+                showError('يرجى إدخال اسم مستخدم');
+                return;
+            }
+
+            if (!state.whitelist.includes(username)) {
+                state.whitelist.push(username);
+                localStorage.setItem('githubWhitelist', JSON.stringify(state.whitelist));
+                elements.whitelistUsername.value = '';
+                renderWhitelist();
+                showSuccess(`تمت إضافة ${username} إلى القائمة البيضاء`);
+                updateStats();
+            } else {
+                showError(`${username} موجود بالفعل في القائمة البيضاء`);
+            }
+        }
+
+        function applyWhitelistFilters(data) {
+            const filters = state.filters.whitelist;
+            let filteredData = [...data];
+            
+            if (filters.search) {
+                filteredData = filteredData.filter(user => 
+                    user.login.toLowerCase().includes(filters.search.toLowerCase())
+                );
+            }
+            
+            return filteredData;
+        }
+
+        function renderWhitelist() {
+            let filteredData = state.whitelist.map(username => {
+                const userData = state.userDataCache.get(username);
+                if (userData) {
+                    return {
+                        login: username,
+                        avatar_url: userData.avatar_url,
+                        html_url: userData.html_url
+                    };
+                } else {
+                    return {
+                        login: username,
+                        avatar_url: `https://github.com/${username}.png`,
+                        html_url: `https://github.com/${username}`
+                    };
+                }
+            });
+            
+            filteredData = applyWhitelistFilters(filteredData);
+            
+            if (!elements.whitelistList) return;
+            
+            if (filteredData.length === 0) {
+                elements.whitelistList.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-secondary);">لا توجد مستخدمين في القائمة البيضاء</p>';
+            } else {
+                elements.whitelistList.innerHTML = filteredData.map((user, index) => `
+                    <div class="user-card ${state.selectedUsers.whitelist.has(user.login) ? 'selected' : ''}" data-username="${user.login}">
+                        <input type="checkbox" class="checkbox" id="whitelist-user-${index}" 
+                               ${state.selectedUsers.whitelist.has(user.login) ? 'checked' : ''} 
+                               onchange="toggleUserSelection('whitelist', '${user.login}')">
+                        <img src="${user.avatar_url}" alt="${user.login}" class="avatar" onerror="this.src='https://github.com/identicons/${user.login}.png'">
+                        <div class="username">${user.login}</div>
+                        <a href="${user.html_url}" target="_blank" class="profile-link">عرض الملف</a>
+                        <div class="user-actions">
+                            <button class="user-action-btn btn-danger" onclick="removeFromWhitelist('${user.login}')">حذف من القائمة البيضاء</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            updateSelectedCount('whitelist');
+        }
+
+        function removeFromWhitelist(username) {
+            state.whitelist = state.whitelist.filter(user => user !== username);
+            localStorage.setItem('githubWhitelist', JSON.stringify(state.whitelist));
+            renderWhitelist();
+            showSuccess(`تمت إزالة ${username} من القائمة البيضاء`);
+            updateStats();
+        }
+
+        function removeSelectedFromWhitelist() {
+            const selectedCount = state.selectedUsers.whitelist.size;
+            
+            if (selectedCount === 0) {
+                showError('يرجى تحديد مستخدمين أولاً');
+                return;
+            }
+
+            for (const username of state.selectedUsers.whitelist) {
+                state.whitelist = state.whitelist.filter(user => user !== username);
+            }
+            
+            localStorage.setItem('githubWhitelist', JSON.stringify(state.whitelist));
+            state.selectedUsers.whitelist.clear();
+            renderWhitelist();
+            showSuccess(`تمت إزالة ${selectedCount} مستخدم من القائمة البيضاء`);
+            updateStats();
+        }
+
+        function updateStats() {
+            if (elements.followersCount) elements.followersCount.textContent = state.followers.length;
+            if (elements.followingCount) elements.followingCount.textContent = state.following.length;
+            if (elements.unfollowersCount) elements.unfollowersCount.textContent = state.unfollowers.length;
+            if (elements.notMutualsCount) elements.notMutualsCount.textContent = state.notMutuals.length;
+            if (elements.whitelistCount) elements.whitelistCount.textContent = state.whitelist.length;
+            
+            if (elements.unfollowersBadge) elements.unfollowersBadge.textContent = state.unfollowers.length;
+            if (elements.notMutualsBadge) elements.notMutualsBadge.textContent = state.notMutuals.length;
+            if (elements.followersBadge) elements.followersBadge.textContent = state.followers.length;
+            if (elements.followingBadge) elements.followingBadge.textContent = state.following.length;
+            if (elements.whitelistBadge) elements.whitelistBadge.textContent = state.whitelist.length;
+        }
+
+        function handleSlowUnfollowUsersChange() {
+            if (!elements.slowUnfollowUsers || !elements.customUsersSection) return;
+            
+            const value = elements.slowUnfollowUsers.value;
+            if (value === 'custom') {
+                elements.customUsersSection.style.display = 'block';
+            } else {
+                elements.customUsersSection.style.display = 'none';
+            }
+        }
+
+        function startSlowUnfollow() {
+            if (!elements.token.value.trim()) {
+                showError('يرجى إدخال رمز الوصول الشخصي لإجراء هذه العملية');
+                return;
+            }
+
+            let targetUsers = [];
+            const targetType = elements.slowUnfollowUsers.value;
+            
+            switch (targetType) {
+                case 'unfollowers':
+                    targetUsers = state.unfollowers.map(user => user.login);
+                    break;
+                case 'notMutuals':
+                    targetUsers = state.notMutuals
+                        .filter(user => state.following.some(f => f.login === user.login))
+                        .map(user => user.login);
+                    break;
+                case 'following':
+                    targetUsers = state.following.map(user => user.login);
+                    break;
+                case 'custom':
+                    const customUsersText = elements.customUsers.value.trim();
+                    if (!customUsersText) {
+                        showError('يرجى إدخال قائمة المستخدمين المخصصة');
+                        return;
+                    }
+                    targetUsers = customUsersText.split(',').map(user => user.trim()).filter(user => user);
+                    break;
+            }
+            
+            if (targetUsers.length === 0) {
+                showError('لا يوجد مستخدمين مستهدفين');
+                return;
+            }
+            
+            const speed = elements.unfollowSpeed.value;
+            const maxUnfollows = parseInt(elements.maxUnfollows.value);
+            const actualTargets = targetUsers.slice(0, maxUnfollows);
+            
+            state.slowUnfollow.active = true;
+            state.slowUnfollow.currentIndex = 0;
+            state.slowUnfollow.total = actualTargets.length;
+            state.slowUnfollow.targets = actualTargets;
+            
+            elements.startSlowUnfollow.disabled = true;
+            elements.stopSlowUnfollow.disabled = false;
+            elements.unfollowProgress.style.width = '0%';
+            elements.unfollowStatus.textContent = `جاري البدء... (0/${state.slowUnfollow.total})`;
+            
+            const intervalTime = speed === 'slow' ? 60000 : 30000;
+            state.slowUnfollow.interval = setInterval(processSlowUnfollow, intervalTime);
+            
+            processSlowUnfollow();
+        }
+
+        async function processSlowUnfollow() {
+            if (!state.slowUnfollow.active || state.slowUnfollow.currentIndex >= state.slowUnfollow.total) {
+                stopSlowUnfollow();
+                return;
+            }
+            
+            const username = state.slowUnfollow.targets[state.slowUnfollow.currentIndex];
+            
+            try {
+                await unfollowUserAPI(username, elements.token.value.trim());
+                removeUserFromAllLists(username);
+                
+                state.slowUnfollow.currentIndex++;
+                const progress = (state.slowUnfollow.currentIndex / state.slowUnfollow.total) * 100;
+                elements.unfollowProgress.style.width = `${progress}%`;
+                elements.unfollowStatus.textContent = `تم إلغاء متابعة ${username} (${state.slowUnfollow.currentIndex}/${state.slowUnfollow.total})`;
+                
+                if (state.slowUnfollow.currentIndex >= state.slowUnfollow.total) {
+                    stopSlowUnfollow();
+                    showSuccess('تم الانتهاء من إلغاء المتابعة البطيء بنجاح');
+                }
+            } catch (error) {
+                console.error(`Failed to unfollow ${username}:`, error);
+                elements.unfollowStatus.textContent = `فشل في إلغاء متابعة ${username} - تخطي`;
+                
+                state.slowUnfollow.currentIndex++;
+                const progress = (state.slowUnfollow.currentIndex / state.slowUnfollow.total) * 100;
+                elements.unfollowProgress.style.width = `${progress}%`;
+                
+                if (state.slowUnfollow.currentIndex >= state.slowUnfollow.total) {
+                    stopSlowUnfollow();
+                    showError('انتهت العملية مع بعض الأخطاء');
+                }
+            }
+        }
+
+        function stopSlowUnfollow() {
+            state.slowUnfollow.active = false;
+            if (state.slowUnfollow.interval) {
+                clearInterval(state.slowUnfollow.interval);
+                state.slowUnfollow.interval = null;
+            }
+            
+            elements.startSlowUnfollow.disabled = false;
+            elements.stopSlowUnfollow.disabled = true;
+            elements.unfollowStatus.textContent = 'تم إيقاف العملية';
+            
+            renderAllTabs();
+        }
+
+        function showError(message) {
+            if (elements.error) {
+                elements.error.textContent = message;
+                elements.error.style.display = 'block';
+            }
+            if (elements.success) {
+                elements.success.style.display = 'none';
+            }
+        }
+
+        function showSuccess(message) {
+            if (elements.success) {
+                elements.success.textContent = message;
+                elements.success.style.display = 'block';
+            }
+            if (elements.error) {
+                elements.error.style.display = 'none';
+            }
+        }
+
+        function capitalizeFirst(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        window.toggleUserSelection = toggleUserSelection;
+        window.unfollowUser = unfollowUser;
+        window.followUser = followUser;
+        window.addToWhitelist = addToWhitelist;
+        window.removeFromWhitelist = removeFromWhitelist;
+        window.changePage = changePage;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تم تحميل DOM، جاري تهيئة التطبيق...');
+            
+            initializeElements();
+            
+            if (!checkEssentialElements()) {
+                console.error('فشل في تهيئة التطبيق: عناصر DOM الأساسية غير متاحة');
+                return;
+            }
+            
+            setupEventListeners();
+            
+            console.log('تم تهيئة التطبيق بنجاح');
+        });
+    </script>
+</body>
+</html>
