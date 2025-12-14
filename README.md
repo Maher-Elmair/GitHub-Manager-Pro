@@ -161,8 +161,8 @@ For complete features including follow/unfollow actions:
 - [ ] **Performance Optimizations** - Faster large dataset handling
 
 ### 🌐 User Experience
-- [ ] **Themes Support** - Light/dark mode toggle
-- [ ] **Internationalization** - Multiple language support
+- [x] **Themes Support** - Light/dark mode toggle
+- [x] **Internationalization** - Multiple language support
 - [ ] **Keyboard Shortcuts** - Power user navigation
 - [ ] **Tutorial System** - Onboarding for new users
 
