@@ -1,46 +1,91 @@
-# ⚡ GitHub Manager Pro
+<h1 align="center">
+  <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/26a1.png" width="35" height="35" alt="GitHub Manager Pro Icon" style="filter: hue-rotate(-20deg) saturate(1.5);" />
+  GitHub Manager Pro
+</h1>
 
-**An advanced GitHub follow management tool with smart filters and safe actions**
+<p align="center">
+  <strong><em>An advanced GitHub follow management tool with verified data, smart automation, and safe bulk actions</em></strong>
+</p>
 
-> A comprehensive web tool for analyzing and managing GitHub follow relationships with ease and safety
+<div align="center">
+  <img src="https://img.shields.io/badge/-HTML5-black?style=for-the-badge&logoColor=white&logo=html5&color=E34F26" alt="HTML5" />
+  <img src="https://img.shields.io/badge/-CSS3-black?style=for-the-badge&logoColor=white&logo=css3&color=1572B6" alt="CSS3" />
+  <img src="https://img.shields.io/badge/-JavaScript_ES6+-black?style=for-the-badge&logoColor=white&logo=javascript&color=F7DF1E" alt="JavaScript ES6+" />
+  <img src="https://img.shields.io/badge/-GitHub_REST_API-black?style=for-the-badge&logoColor=white&logo=github&color=181717" alt="GitHub REST API" />
+  <img src="https://img.shields.io/badge/-Local_Storage-black?style=for-the-badge&logoColor=white&logo=googlechrome&color=4285F4" alt="Local Storage" />
+</div>
+
+<p align="center">
+  <sub>A comprehensive web tool for analyzing and managing GitHub follow relationships with accuracy and safety</sub>
+</p>
 
 ---
 
 ## 📖 Project Description
 
-GitHub Manager Pro is a powerful web-based tool that helps you efficiently manage your GitHub followers and following. It provides advanced analytics, smart filtering, and safe bulk actions to optimize your GitHub network.
+GitHub Manager Pro is a powerful, single-file, browser-based tool that helps you analyze and manage your GitHub followers and following. Every action is verified directly against GitHub before your local view is updated, so what you see always matches reality — even for accounts with thousands of followers.
 
 ### 💡 Project Origin
 
-This project was born out of necessity when the popular [github-unfollow-checker.vercel.app](https://github-unfollow-checker.vercel.app) service became unavailable. Faced with the need for a reliable tool to manage GitHub relationships, I decided to create a comprehensive solution that offers even more features and better user experience.
+This project was born out of necessity when the popular [github-unfollow-checker.vercel.app](https://github-unfollow-checker.vercel.app) service became unavailable. It has since grown well beyond a simple checker into a full relationship-management suite with discovery, history tracking, and a dedicated settings hub.
 
 ---
 
 ## ✅ Features
 
 ### 🔍 Analytics & Detection
-- 📊 **Real-time Statistics** - Live follower/following analytics
-- 🔍 **Unfollowers Detection** - Identify users who don't follow back
-- 🤝 **Non-mutuals Identification** - Find all non-reciprocal relationships
-- 📈 **Follow/Following Analytics** - Detailed relationship insights
+- **Real-time Statistics** — live counts for Followers, Following, Unfollowers, Follow Back candidates, Private Accounts, and Whitelist
+- **Unfollowers Detection** — people you follow who don't follow back
+- **Follow Back Detection** — people who follow you that you haven't followed back yet (a focused, single-direction list — no more mixed-direction confusion)
+- **Mutual Ratio** — a visual breakdown of how much of your following list is reciprocated
+- **Loaded-vs-Total Indicators** — always know whether you're looking at the full picture or a partial batch
 
-### 🛡️ Safety & Control
-- ⚡ **Smart Whitelist** - Protect important users from accidental unfollowing
-- 🐌 **Slow Unfollow** - Safe bulk unfollowing with rate limiting
-- 🔒 **Rate Limit Protection** - Automatic API request management
-- ✅ **Bulk Action Safety** - Confirmation dialogs and progress tracking
+### 🎯 Discover New People
+- Search GitHub's real user index by **location, primary language, account creation range, follower count, and repo count**
+- Optional **Deep Filter** pass that fetches full profiles to also filter by bio content, hireable status, following count, and last-updated date
+- Bulk follow suggestions straight from the results
 
-### 🎯 Advanced Filters
-- 🔎 **Smart Search** - Instant username search across all lists
-- 🎛️ **Multiple Sort Options** - Sort by username, recent, oldest
-- 🏷️ **Category Filtering** - Filter by selection status and relationship type
-- 📱 **Responsive Pagination** - Efficient handling of large datasets
+### 🕓 History
+- Automatic daily snapshots of your followers/following
+- A diff view showing who followed/unfollowed you and who you followed/unfollowed since the last snapshot
+
+### 🛡️ Safety & Verification
+- **Live Verification** — every follow/unfollow is confirmed directly against GitHub's own relationship endpoint before your local data or counters change, so nothing is ever assumed to have worked
+- **Private Accounts List** — automatically detects accounts that silently reject follow requests (private/restricted activity), removes them from Follow Back, and tracks them in their own manageable tab so you're never prompted to retry a follow that can't succeed
+- **Smart Whitelist** — protect specific users from ever appearing in Unfollowers or Follow Back
+- **Undo Window** — bulk unfollow waits a few seconds (configurable) before actually running, with a one-click undo
+- **Stop Controls** — halt any bulk follow/unfollow mid-batch
+- **Slow Unfollow Mode** — rate-limited, gradual unfollowing for large cleanups
+- **Rate Limit Badge** — live remaining-requests indicator sourced straight from GitHub's response headers
+- **Confirmation Dialogs** — every destructive bulk action asks first
+
+### 🎛️ Advanced Filters & Data Handling
+- Instant search across every list
+- Sort by username or original API order
+- Filter by selection status, mutual/non-mutual, etc.
+- **Configurable pagination** — choose your batch size, or turn on **"load all data automatically"** to keep fetching in the background (with a Stop control) until everything is loaded
+- CSV export and one-click username copy on every list tab
 
 ### 🌙 User Experience
-- 🎯 **GitHub-like Dark Theme** - Familiar and comfortable interface
-- 📱 **Fully Responsive** - Works perfectly on desktop and mobile
-- 🎪 **Smooth Animations** - Enhanced user interactions
-- 🔄 **Real-time Updates** - Instant data synchronization
+- GitHub-inspired dark/light theme
+- Full English/Arabic interface with RTL support
+- Toast notifications and a styled confirm dialog (no browser `alert()`/`confirm()`)
+- Keyboard shortcuts for search, selection, pagination, tab switching, and more (press `?` for the full list)
+- Fully responsive, mobile-friendly layout
+
+### ⚙️ Settings Hub
+A dedicated tab consolidating every configurable behavior:
+- Batch size for data loading, cards per page, auto-load-all toggle
+- Automatic "Load More" retry limit, undo window duration
+- Discover's Deep Filter cap
+- **Private Accounts scope** — choose which tabs relabel or exclude known-private accounts
+- Theme/language shortcuts
+- Full backup export/import (whitelist, private list, history, settings, activity log)
+- Data integrity check (removes duplicates, resyncs real counts from GitHub)
+- Danger-zone: wipe all local data for the current account
+
+### 📋 Activity Log
+Every follow, unfollow, whitelist change, and private-account detection is logged with a timestamp and success/failure status, exportable to CSV.
 
 ---
 
@@ -54,133 +99,76 @@ This project was born out of necessity when the popular [github-unfollow-checker
 
 ### Full Functionality
 For complete features including follow/unfollow actions:
-1. **Create GitHub Personal Access Token** (see below)
-2. **Enter token in the input field**
+1. **Create a GitHub Personal Access Token** (see below)
+2. **Enter the token in the input field**
 3. **Access all management features**
 
 ---
 
 ## 🔑 GitHub Token Setup
 
-### Creating Personal Access Token
-1. Go to **GitHub Settings** → **Developer settings**
-2. Click **Personal access tokens** → **Tokens (classic)**
-3. Click **Generate new token**
-4. Select permissions: `repo`, `user`
-5. Copy and securely store the token
+### Creating a Personal Access Token
+The app supports both token types, with in-app step-by-step instructions for each:
+
+**Fine-grained (recommended)**
+1. Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token
+2. Under Account permissions, set **Followers** to **Read and write**
+3. Leave repository access as **No access**, then generate and copy the token
+
+**Classic**
+1. Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token
+2. Check **only** the `user:follow` scope
+3. Generate and copy the token
 
 ### Token Security
-- 🔒 Token is stored only in browser memory
-- 🚫 Never sent to any external servers
-- 🧹 Automatically cleared when browser closes
+- 🔒 Token is only ever held in the browser's memory for the current session
+- 🚫 Never sent anywhere except directly to `api.github.com`
+- 🧹 Never written to local storage — cleared when you close or refresh the page
 - ⚠️ Never share your token with anyone
-
----
-
-## 🛡️ Safety Features
-
-### ⚡ Smart Rate Limiting
-- 🐌 **Slow Unfollow Mode** - 1-2 actions per minute
-- ⏱️ **Automatic Delays** - Built-in delays between API calls
-- 🚦 **Request Queueing** - Sequential request processing
-- 📉 **API Limit Monitoring** - Respects GitHub's rate limits
-
-### 🔒 Data Protection
-- 🔒 **Local Storage Only** - Whitelist data stays in your browser
-- 🚫 **No Data Sent to Servers** - Everything runs locally
-- 🔑 **Token Memory Only** - Never persisted to storage
-- 🧹 **Automatic Cleanup** - No residual data
 
 ---
 
 ## 📊 Available Tabs
 
 | Tab | Description | Key Features |
-|-----|-------------|--------------|
-| **Unfollowers** | Users you follow who don't follow back | Bulk unfollow, whitelist, search |
-| **Non-mutuals** | All non-mutual relationships | Advanced filtering, dual actions |
-| **Followers** | Your current followers | Follow back, analytics |
-| **Following** | Users you're following | Relationship analysis, management |
-| **Whitelist** | Protected users | Manual add/remove, persistence |
-| **Slow Unfollow** | Safe bulk unfollowing | Rate-limited, progress tracking |
-
----
-
-## 🎨 UI/UX Features
-
-### Design System
-- 🌙 **Dark Theme** - GitHub-inspired color scheme
-- 📱 **Mobile-First** - Responsive design for all devices
-- 🎪 **Micro-interactions** - Smooth hover and click effects
-- 🔄 **Loading States** - Clear progress indicators
-
-### Interactive Elements
-- ✅ **Bulk Selection** - Select/deselect all with one click
-- 🎛️ **Dynamic Filtering** - Real-time list filtering
-- 📄 **Smart Pagination** - Handles large datasets efficiently
-- 🔍 **Instant Search** - Live search across all data
+|---|---|---|
+| **Unfollowers** | Users you follow who don't follow back | Bulk unfollow, whitelist, search, CSV export |
+| **Follow Back** | Users who follow you that you haven't followed back | Live-verified candidates, bulk follow, private-account detection |
+| **Followers** | Your current followers | Follow back, mutual status |
+| **Following** | Users you're following | Relationship analysis, bulk unfollow |
+| **Discover** | Find new people to follow | Location/language/account-age/follower filters, Deep Filter |
+| **Whitelist** | Protected users | Manual add/remove, export/import, persistent per account |
+| **Private Accounts** | Accounts that reject follow attempts | Auto-detected, manual add/remove, export/import |
+| **History** | Daily snapshots & diffs | New/lost followers, who you followed/unfollowed |
+| **Settings** | All configuration in one place | Data loading, automation, backup, integrity check, danger zone |
 
 ---
 
 ## 🧰 Technical Stack
 
 | Technology | Purpose | Implementation |
-|------------|---------|----------------|
-| **HTML5** | App Structure | Semantic markup, accessibility |
-| **CSS3** | Styling & Layout | Grid, Flexbox, animations |
-| **JavaScript ES6+** | Application Logic | Async/await, modules, local storage |
-| **GitHub REST API v3** | Data Integration | Fetch API, error handling |
-| **Local Storage API** | Data Persistence | Whitelist storage |
+|---|---|---|
+| **HTML5** | App structure | Semantic markup, accessibility |
+| **CSS3** | Styling & layout | Grid, Flexbox, custom properties, animations |
+| **JavaScript ES6+** | Application logic | Async/await, modular objects, event delegation |
+| **GitHub REST API v3** | Data integration | Fetch API, typed error handling, rate-limit tracking |
+| **GitHub Search API** | Discover tab | User search with real qualifiers |
+| **Local Storage API** | Data persistence | Per-account whitelist, private list, history, settings, activity log |
 
 ---
 
-## 🔧 Possible Enhancements
+## 🛡️ Safety Guidelines
 
-### 🚀 Immediate Improvements
-- [ ] **Local Storage Backup** - Export/import whitelist data
-- [ ] **Advanced Filtering** - Filter by account age, activity
-- [ ] **Batch Operations** - Process larger batches with safety
-- [ ] **Progress Tracking** - Better visual progress indicators
-
-### 📈 Medium Term
-- [ ] **PWA Implementation** - Install as mobile app
-- [ ] **Advanced Analytics** - Follow/unfollow trends over time
-- [ ] **Multi-account Support** - Manage multiple GitHub accounts
-- [ ] **Scheduled Actions** - Plan unfollows for optimal times
-
-### 🎯 Long Term Vision
-- [ ] **Chrome Extension** - Browser integration
-- [ ] **GitHub App** - Official GitHub integration
-- [ ] **Team Features** - Organization account management
-- [ ] **API Service** - Backend for enhanced features
-
-### 🔒 Security & Performance
-- [ ] **Encrypted Storage** - Secure token handling
-- [ ] **Offline Mode** - Basic functionality without internet
-- [ ] **Caching System** - Reduced API calls
-- [ ] **Performance Optimizations** - Faster large dataset handling
-
-### 🌐 User Experience
-- [x] **Themes Support** - Light/dark mode toggle
-- [x] **Internationalization** - Multiple language support
-- [ ] **Keyboard Shortcuts** - Power user navigation
-- [ ] **Tutorial System** - Onboarding for new users
-
----
-
-## 🚨 Important Notes
-
-### Safety Guidelines
-- ✅ **Safe to Use** - No data leaves your browser
-- ⚠️ **Respect Rate Limits** - GitHub has strict API limits
-- 🔒 **Token Security** - Your token never leaves the browser
-- 📱 **Browser Based** - Works offline after initial load
+- ✅ **Safe to Use** — no data leaves your browser except direct calls to GitHub's API
+- ⚠️ **Respect Rate Limits** — GitHub enforces strict hourly API limits; the in-app badge shows your remaining quota
+- 🔒 **Token Security** — your token never leaves the browser and is never persisted
+- 📱 **Browser Based** — works entirely client-side
 
 ### Limitations
-- 🔄 **No Real-time Sync** - Data reflects time of last fetch
-- 📊 **API Rate Limits** - Limited by GitHub's API quotas
-- 💾 **Local Storage Only** - Data persists only in your browser
-- 🎯 **Read-only Without Token** - Token required for actions
+- 🔄 **No Real-time Sync** — data reflects the time of your last load/refresh
+- 📊 **API Rate Limits** — bulk operations and full data loads are bound by GitHub's quotas
+- 💾 **Local Storage Only** — whitelist, private list, history, and settings persist only on the device/browser you used
+- 🎯 **Read-only Without a Token** — a token is required to perform any follow/unfollow action
 
 ---
 
@@ -197,47 +185,37 @@ For complete features including follow/unfollow actions:
 
 ## 🤖 AI Generation Note
 
-**🚀 Entirely AI-Generated Code**
-
-This complete application was generated by artificial intelligence without any human coding intervention. The project demonstrates advanced AI capabilities in:
-
-- **Web Development** - Modern HTML5, CSS3, JavaScript ES6+
-- **API Integration** - GitHub REST API consumption and error handling
-- **UX/UI Design** - Responsive design with smooth interactions
-- **Data Management** - Local storage and state management
-- **Security Implementation** - Safe token handling and rate limiting
-
-The AI successfully created a production-ready tool with complex functionality, demonstrating the potential of AI in software development.
+This application was built and iteratively refined with AI assistance, including the full rewrite covering pagination accuracy, live verification, Discover, History, the Private Accounts system, and the Settings hub described above.
 
 ---
 
 ## 🙌 Acknowledgments
 
-- **GitHub** for their excellent and well-documented API
-- **AI Technology** for making rapid development possible
+- **GitHub** for their well-documented REST and Search APIs
+- **AI Technology** for making rapid, iterative development possible
 - **Open Source Community** for continuous inspiration
-- **Users** for their feedback and feature suggestions
+- **Users** for feedback that shaped several of the fixes above
 
 ---
 
 ## ⚠️ Disclaimer
 
-This tool is for educational and account management purposes. Always respect:
+This tool is for educational and personal account management purposes. Always respect:
 
 - GitHub's [Terms of Service](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service)
 - API [Rate Limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting)
 - Community [Guidelines](https://docs.github.com/en/site-policy/github-terms/github-community-guidelines)
 
-Use responsibly and at your own risk. The developers are not responsible for any account restrictions resulting from improper use.
+Use responsibly and at your own risk. The developer is not responsible for any account restrictions resulting from improper use.
 
 ---
 
 ## 🌟 Support
 
-If you find this tool helpful, please share it with other developers! 
+If you find this tool helpful, please share it with other developers!
 
 ⭐ **Star the project if you like it!**
 
 ---
 
-**⚡ GitHub Manager Pro - Manage Smarter, Not Harder**
+<h6 align="center"><i>⚡ GitHub Manager Pro — Manage Smarter, Not Harder</i></h6>
